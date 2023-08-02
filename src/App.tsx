@@ -1,24 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { fetchSentences } from "./Components/api";
+import "./App.css";
+import Sentence from "./Components/sentence";
+
+interface UseSpeechSynthesisProps {
+  userId: any;
+  id: Number;
+  title: string;
+  body: any;
+}
 
 function App() {
+  const [sentences, setSentences] = useState<any>([]);
+  const [limit, setLimit] = useState<number>(5); // Number of sentences to load
+
+  useEffect(() => {
+    fetchSentences(limit).then((data) => setSentences(data));
+  }, [limit]);
+  console.log("🚀 ~ file: App.tsx:8 ~ App ~ sentences:", sentences);
+
+  const handleLoadMore = () => {
+    setLimit((prevLimit) => prevLimit + 5); // Increase the limit for fetching
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Sentences</h1>
+      {sentences
+        ? sentences.map((sentence: UseSpeechSynthesisProps, index: any) => {
+            console.log(sentence);
+            return (
+              <>
+                <Sentence key={index} text={sentence.title} />{" "}
+              </>
+            );
+          })
+        : "Loading Your App"}
+      {sentences ? <button onClick={handleLoadMore}>Load More</button> : ""}
     </div>
   );
 }
