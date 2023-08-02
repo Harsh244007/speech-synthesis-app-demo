@@ -13,9 +13,12 @@ interface UseSpeechSynthesisProps {
 function App() {
   const [sentences, setSentences] = useState<any>([]);
   const [limit, setLimit] = useState<number>(5); // Number of sentences to load
+  const [error, setError] = useState<string | null>(null); // Add error state
 
   useEffect(() => {
-    fetchSentences(limit).then((data) => setSentences(data));
+    fetchSentences(limit)
+      .then((data) => setSentences(data))
+      .catch((error) => setError("An error occurred while fetching data."));
   }, [limit]);
   console.log("🚀 ~ file: App.tsx:8 ~ App ~ sentences:", sentences);
 
@@ -25,17 +28,17 @@ function App() {
   return (
     <div>
       <h1>Sentences</h1>
-      {sentences
-        ? sentences.map((sentence: UseSpeechSynthesisProps, index: any) => {
-            console.log(sentence);
-            return (
-              <>
-                <Sentence key={index} text={sentence.title} />{" "}
-              </>
-            );
-          })
-        : "Loading Your App"}
-      {sentences ? <button onClick={handleLoadMore}>Load More</button> : ""}
+      {error ? (
+        <div>Error: {error}</div>
+      ) : sentences ? (
+        sentences.map((sentence: UseSpeechSynthesisProps, index: any) => {
+          console.log(sentence);
+          return <Sentence key={index} text={sentence.title} />;
+        })
+      ) : (
+        "Loading Your App"
+      )}
+      {sentences  && !error ? <button  onClick={handleLoadMore}>Load More</button> : ""}
     </div>
   );
 }

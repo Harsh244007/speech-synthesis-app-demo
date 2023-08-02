@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface UseSpeechSynthesisProps {
   text: any;
@@ -10,8 +10,9 @@ export function useSpeechSynthesis({ text }: UseSpeechSynthesisProps) {
   useEffect(() => {
     if (isPlaying) {
       const utterance = new SpeechSynthesisUtterance();
-      utterance.lang = 'en-US';
-      utterance.text = text;
+      utterance.lang = "en-US";
+      // utterance.text = text;
+      utterance.text = `<speak>${text}</speak>`;
       speechSynthesis.speak(utterance);
     } else {
       speechSynthesis.cancel();
