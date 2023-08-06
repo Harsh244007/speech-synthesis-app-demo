@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { fetchSentences } from "./Components/api";
 import "./App.css";
 import Sentence from "./Components/sentence";
@@ -22,9 +22,9 @@ function App() {
   }, [limit]);
   console.log("🚀 ~ file: App.tsx:8 ~ App ~ sentences:", sentences);
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     setLimit((prevLimit) => prevLimit + 5); // Increase the limit for fetching
-  };
+  },[]);
   return (
     <div>
       <h1>Sentences</h1>
@@ -43,4 +43,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App);

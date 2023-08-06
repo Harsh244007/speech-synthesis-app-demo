@@ -4,15 +4,18 @@ interface UseSpeechSynthesisProps {
   text: any;
 }
 
-export function useSpeechSynthesis({ text }: UseSpeechSynthesisProps) {
+function useSpeechSynthesis({ text }: UseSpeechSynthesisProps) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     if (isPlaying) {
       const utterance = new SpeechSynthesisUtterance();
+      console.log(
+        "🚀 ~ file: useSpeechSynthesis.tsx:13 ~ useEffect ~ utterance:",
+        utterance
+      );
       utterance.lang = "en-US";
-      // utterance.text = text;
-      utterance.text = `<speak>${text}</speak>`;
+      utterance.text = `${text}`;
       speechSynthesis.speak(utterance);
     } else {
       speechSynthesis.cancel();
@@ -25,3 +28,5 @@ export function useSpeechSynthesis({ text }: UseSpeechSynthesisProps) {
 
   return { isPlaying, setIsPlaying };
 }
+
+export { useSpeechSynthesis };
