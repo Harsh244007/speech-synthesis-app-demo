@@ -12,6 +12,7 @@ body {
 
 body * {
   transition: all 0.3s ease-in-out;
+  accent-color: #0d9488;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
